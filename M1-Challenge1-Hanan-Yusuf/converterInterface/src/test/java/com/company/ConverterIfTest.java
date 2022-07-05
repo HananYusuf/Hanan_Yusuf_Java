@@ -19,11 +19,13 @@ public class ConverterIfTest {
     public void shouldConvertMonth() {
 
         assertEquals("JANUARY", conv.convertMonth(1));
+        assertEquals("MARCH", conv.convertMonth(3));
     }
 
     @Test
     public void shouldConvertDay() {
 
         assertEquals("FRIDAY", conv.convertDay(6));
+        assertEquals("THURSDAY", conv.convertDay(5));
     }
 }

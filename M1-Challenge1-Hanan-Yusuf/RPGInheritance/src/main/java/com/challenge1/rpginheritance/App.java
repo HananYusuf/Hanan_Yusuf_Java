@@ -5,7 +5,7 @@ public class App {
     public static void main(String[] args) {
 
         Farmer frmr1 = new Farmer();
-        frmr1.setName("Hanan");
+        frmr1.setName("Peter");
         frmr1.setStrength(75);
         frmr1.setHealth(100);
         frmr1.setStamina(75);
@@ -16,7 +16,6 @@ public class App {
         frmr1.setPlowing(false);
         frmr1.setHarvesting(false);
 
-        frmr1.attackAnotherCharacter();
 
         Constable const1 = new Constable();
         const1.setName("Steve");
@@ -29,7 +28,6 @@ public class App {
         const1.setArrested(false);
         const1.setJurisdiction("You're guilty");
 
-        const1.arrestAnotherCharacter();
 
         Warrior warr1 = new Warrior();
         warr1.setName("Dave");
@@ -41,5 +39,13 @@ public class App {
         warr1.setShieldStrength(100);
         warr1.setRunning(false);
 
+
+        warr1.attackAnotherCharacter(frmr1);
+        const1.arrestAnotherCharacter(frmr1);
+        frmr1.attackAnotherCharacter(const1);
+
+
+
     }
+
 }

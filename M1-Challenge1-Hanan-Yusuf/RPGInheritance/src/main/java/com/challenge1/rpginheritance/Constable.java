@@ -1,13 +1,12 @@
 package com.challenge1.rpginheritance;
 
-import com.challenge1.rpginheritance.com.challenge1.Player;
-
 public class Constable extends Player {
 
-    protected String jurisdiction;
+   private String jurisdiction;
 
-    public void arrestAnotherCharacter() {
-      System.out.println(this.name + "Constable:...");
+    public void arrestAnotherCharacter(Player player) {
+        player.setArrested(true);
+      System.out.println(this.name + " " + "is a Constable.");
 
     }
 
