@@ -15,11 +15,13 @@ public class ConstableTest {
 
     @Test
     public void arrestAnotherCharacter() {
-        //Arrange
+
         Warrior warr = new Warrior();
-        //Act
-        //Assert
         const1.arrestAnotherCharacter(warr);
+
+        boolean expectedValue = true;
+        boolean actualValue = warr.isArrested();
+        assertEquals(expectedValue, actualValue);
     }
 
     @Test
@@ -27,6 +29,10 @@ public class ConstableTest {
         Constable const1= new Constable();
         Warrior warr1 = new Warrior();
         const1.getJurisdiction();
+
+//        String expectedValue = "You're guilty";
+//        String actualValue = const1.getJurisdiction();
+//        assertEquals(expectedValue, actualValue);
     }
 
     @Test

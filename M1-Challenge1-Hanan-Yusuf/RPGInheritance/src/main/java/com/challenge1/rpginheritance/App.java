@@ -43,6 +43,7 @@ public class App {
         warr1.attackAnotherCharacter(frmr1);
         const1.arrestAnotherCharacter(frmr1);
         frmr1.attackAnotherCharacter(const1);
+        const1.arrestAnotherCharacter(warr1);
 
 
 

@@ -12,8 +12,6 @@ public class IceCream {
 
     private int numberOfToppings;
 
-
-
     private int soldAmount;
 
     public void monthSpecial(List<IceCream> iceCreamList){
@@ -27,7 +25,6 @@ public class IceCream {
            }
 
         }
-
 
 
     public int calculateCost(){

@@ -15,17 +15,19 @@ private int shieldStrength;
         this.shieldStrength = shieldStrength;
     }
 
-    public boolean attackAnotherCharacter(Player player) {
+    public Warrior() {
+
+    }
+
+    public int attackAnotherCharacter(Player player) {
         //  player.getStrength();
           //if player attacks someone else then player strength increases by 2
-        if(player){
-
-        }
+//        if(player.){
+//     }
          //when this method is called pass in a player that is being attacked or attacking
-
         //strength += 2
         System.out.println(this.name + " " + "is a Warrior.");
-
+         return strength +=2;
     }
 
     public int getShieldStrength() {

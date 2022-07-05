@@ -32,11 +32,11 @@ public class IceCreamTest {
     @Test
 
     public void shouldThisMonthsSpecial(){
-        int expectedOutput = ; //expected output assignment
+        int expectedOutput = 100; //expected output assignment
         icecream.setPrice(2);
-        icecream.setQuantity(2);
-        icecream.setNumberOfToppings(1);
-        int actualOutput = icecream.calculateCost();
+        icecream.setQuantity(50);
+        icecream.setSoldAmount(100);
+        int actualOutput = icecream.getSoldAmount();
         assertEquals(expectedOutput, actualOutput);
     }
 
