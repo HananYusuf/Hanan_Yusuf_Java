@@ -14,16 +14,16 @@ public class IceCream {
 
     private int soldAmount;
 
-    public void monthSpecial(List<IceCream> iceCreamList){
+    public int monthSpecial(List<IceCream> iceCreamList){
         int special = 0;
 
            for(int i = 0; i < iceCreamList.size(); i++) {
                 if (iceCreamList.get(i).getSoldAmount() > special){
                     special = iceCreamList.get(i).getSoldAmount();
-                    System.out.println(iceCreamList.get(i).getFlavor() + "This month's special");
+                    System.out.println(iceCreamList.get(i).getFlavor());
                 }
            }
-
+        return special;
         }
 
 

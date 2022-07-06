@@ -14,33 +14,36 @@ public class FarmerTest {
     }
 
     @Test
-    public void attackAnotherCharacter() {
-        Constable const1 = new Constable();
+    public void shouldAttackAnotherCharacter() {
+        Constable const1 = new Constable("Guilty");
+        int expectedValue = 59;
         frmr1.attackAnotherCharacter(const1);
-    }
-
-    @Test
-    public void isPlowing() {
-        boolean expectedValue = false;
-        boolean actualValue = frmr1.isPlowing();
+        int actualValue = const1.getStrength(); //frmr1 attack const1
         assertEquals(expectedValue, actualValue);
-
     }
 
-    @Test
-    public void setPlowing() {
-    }
-
-    @Test
-    public void isHarvesting() {
-        boolean expectedValue = false;
-        boolean actualValue = frmr1.isHarvesting();
-        assertEquals(expectedValue, actualValue);
-
-    }
-
-    @Test
-    public void setHarvesting() {
-
-    }
+//    @Test
+//    public void isPlowing() {
+//        boolean expectedValue = false;
+//        boolean actualValue = frmr1.isPlowing();
+//        assertEquals(expectedValue, actualValue);
+//
+//    }
+//
+//    @Test
+//    public void setPlowing() {
+//    }
+//
+//    @Test
+//    public void isHarvesting() {
+//        boolean expectedValue = false;
+//        boolean actualValue = frmr1.isHarvesting();
+//        assertEquals(expectedValue, actualValue);
+//
+//    }
+//
+//    @Test
+//    public void setHarvesting() {
+//
+//    }
 }

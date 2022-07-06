@@ -6,6 +6,17 @@ public class Constable extends Player {
 
    private String jurisdiction;
 
+    public Constable(String jurisdiction) {
+        name = "";
+        strength = 60;
+        health = 100;
+        stamina = 60;
+        speed = 20;
+        attackPower = 5;
+        running = false;
+        arrested = false;
+        this.jurisdiction = jurisdiction;
+    }
     public void arrestAnotherCharacter(Player player) {
         player.setArrested(true);
       System.out.println(this.name + " " + "is a Constable.");

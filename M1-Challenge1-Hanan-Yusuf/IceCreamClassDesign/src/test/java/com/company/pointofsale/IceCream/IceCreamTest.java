@@ -32,6 +32,7 @@ public class IceCreamTest {
     @Test
 
     public void shouldThisMonthsSpecial(){
+        IceCream iceCream2 = new IceCream();
         int expectedOutput = 100; //expected output assignment
         icecream.setPrice(2);
         icecream.setQuantity(50);

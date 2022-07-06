@@ -10,7 +10,7 @@ public class ConstableTest {
     Constable const1;
     @Before
     public void setUp()  {
-        const1 = new Constable();
+        const1 = new Constable("Guilty");
     }
 
     @Test
@@ -26,7 +26,7 @@ public class ConstableTest {
 
     @Test
     public void getJurisdiction() {
-        Constable const1= new Constable();
+        Constable const1= new Constable("Guilty");
         Warrior warr1 = new Warrior();
         const1.getJurisdiction();
 
@@ -35,7 +35,7 @@ public class ConstableTest {
 //        assertEquals(expectedValue, actualValue);
     }
 
-    @Test
-    public void setJurisdiction() {
-    }
+//    @Test
+//    public void setJurisdiction() {
+//    }
 }

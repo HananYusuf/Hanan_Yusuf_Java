@@ -17,10 +17,10 @@ public class WarriorTest {
     public void shouldAttackAnotherCharacter() {
         //Arrange
         Farmer frmr1 = new Farmer();
-        int expectedStrengthValue = 48;
+        int expectedStrengthValue = 58;
+        warr1.attackAnotherCharacter(frmr1);
         //Act
         int actualStrengthValue = frmr1.strength-2;
-        warr1.attackAnotherCharacter(frmr1);
         //Assort
         assertEquals(expectedStrengthValue, actualStrengthValue);
 

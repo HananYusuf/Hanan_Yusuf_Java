@@ -15,9 +15,21 @@ public class Farmer extends Player {
 
     public Farmer() {
 
+            name = "";
+            strength = 60;
+            health = 100;
+            stamina = 60;
+            speed = 20;
+            attackPower = 5;
+            running = false;
+            arrested = false;
+            plowing = false;
+            harvesting = false;
+
     }
 
     public void attackAnotherCharacter(Player player) {
+        player.strength--;
         System.out.println(this.name + " " + "is a Farmer");
 
     }

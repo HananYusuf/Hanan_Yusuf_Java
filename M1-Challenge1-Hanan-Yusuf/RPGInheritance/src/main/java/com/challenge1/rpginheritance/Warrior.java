@@ -17,6 +17,16 @@ private int shieldStrength;
 
     public Warrior() {
 
+            name = "";
+            strength = 60;
+            health = 100;
+            stamina = 60;
+            speed = 20;
+            attackPower = 5;
+            running = false;
+            arrested = false;
+            shieldStrength = 100;
+
     }
 
     public int attackAnotherCharacter(Player player) {
