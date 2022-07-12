@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -33,10 +34,83 @@ public class MathSolutionControllerTest {
 
 
     @Test
-    public void shouldReturn422StatusIfMissingOperandOrIfOperandsAreNotBothNumbersAdd () throws Exception {
+    public void shouldReturnSuccessfulResponsewhenAddTwoInt() throws Exception {
+        // ARRANGE
+        MathSolution inputOperation = new MathSolution();
+        inputOperation.setOperand1(4);
+        inputOperation.setOperand2(5);
+        inputOperation.setAnswer(9);
+        inputOperation.setOperation("add");
+
+
+        // Convert Java Object to JSON.
+        String inputJson = mapper.writeValueAsString(inputOperation);
+
+        // ACT
+        mockMvc.perform(
+                        post("/add")                                    // Perform the POST request.
+                                .content(inputJson)                               // Set the request body.
+                                .contentType(MediaType.APPLICATION_JSON)          // Tell the server it's in JSON format.
+                )
+                .andDo(print())                                                     // Print results to console.
+                .andExpect(status().isCreated())
+                .andExpect(content().json("{\"operand1\":4,\"operand2\":5,\"operation\":\"add\",\"answer\":9}"));
+    }
+
+    @Test
+    public void shouldReturnSuccessfulResponsewhenSubTwoInt() throws Exception {
+
+        // ARRANGE
+        MathSolution inputOperation = new MathSolution();
+        inputOperation.setOperand1(12);
+        inputOperation.setOperand2(5);
+        inputOperation.setAnswer(7);
+        inputOperation.setOperation("sub");
+
+        // Convert Java Object to JSON.
+        String inputJson = mapper.writeValueAsString(inputOperation);
+
+        // ACT
+        mockMvc.perform(
+                        post("/subtract")                                // Perform the POST request.
+                                .content(inputJson)                               // Set the request body.
+                                .contentType(MediaType.APPLICATION_JSON)          // Tell the server it's in JSON format.
+                )
+                .andDo(print())                                                     // Print results to console.
+                .andExpect(status().isCreated())
+                .andExpect(content().json("{\"operand1\":12,\"operand2\":5,\"operation\":\"subtract\",\"answer\":7}"));       // ASSERT (status code is 422)
+    }
+    @Test
+    public void shouldReturnSuccessfulResponsewhenMulTwoInt() throws Exception {
+
         // ARRANGE
         MathSolution inputOperation = new MathSolution();
         inputOperation.setOperand1(6);
+        inputOperation.setOperand2(3);
+        inputOperation.setAnswer(9);
+        inputOperation.setOperation("mul");
+
+        // Convert Java Object to JSON.
+        String inputJson = mapper.writeValueAsString(inputOperation);
+
+        // ACT
+        mockMvc.perform(
+                        post("/multiply")                                // Perform the POST request.
+                                .content(inputJson)                               // Set the request body.
+                                .contentType(MediaType.APPLICATION_JSON)          // Tell the server it's in JSON format.
+                )
+                .andDo(print())                                                     // Print results to console.
+                .andExpect(status().isCreated())
+                .andExpect(content().json("{\"operand1\":6,\"operand2\":3,\"operation\":\"multiply\",\"answer\":18}"));       // ASSERT (status code is 422)
+    }
+
+
+    @Test
+    public void shouldReturn422StatusIfMissingOperandOrIfOperandsAreNotBothNumbersAdd () throws Exception {
+        String operand1;
+        // ARRANGE
+        MathSolution inputOperation = new MathSolution();
+        inputOperation.setOperand1(Integer.parseInt(""));
         inputOperation.setOperand2(6);
         inputOperation.setAnswer(12);
         inputOperation.setOperation("add");
@@ -87,28 +161,6 @@ public class MathSolutionControllerTest {
     }
 
 
-    @Test
-    public void shouldReturn422StatusIfMissingOperandOrIfOperandsAreNotBothNumbersMul () throws Exception {
-
-        // ARRANGE
-        MathSolution inputOperation = new MathSolution();
-        inputOperation.setOperand1(6);
-        inputOperation.setOperand2(3);
-        inputOperation.setAnswer(9);
-        inputOperation.setOperation("mul");
-
-        // Convert Java Object to JSON.
-        String inputJson = mapper.writeValueAsString(inputOperation);
-
-        // ACT
-        mockMvc.perform(
-                        post("/multiply")                                // Perform the POST request.
-                                .content(inputJson)                               // Set the request body.
-                                .contentType(MediaType.APPLICATION_JSON)          // Tell the server it's in JSON format.
-                )
-                .andDo(print())                                           // Print results to console.
-                .andExpect(status().isUnprocessableEntity());             // ASSERT (status code is 422)
-    }
 
     @Test
     public void shouldReturn422StatusIfMissingOperandOrIfOperandsAreNotBothNumbersDiv () throws Exception {
@@ -134,4 +186,9 @@ public class MathSolutionControllerTest {
 
     }
 
-}
+//    @Test
+//    public void shouldReturn422StatusIfMissingOperandOrIfOperandsAreNotBothNumbersMul () throws Exception {
+//
+//    }
+    }
+

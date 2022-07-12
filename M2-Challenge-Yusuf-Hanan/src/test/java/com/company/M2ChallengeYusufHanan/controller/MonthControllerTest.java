@@ -67,4 +67,38 @@ public class MonthControllerTest {
                 .andExpect(content().json(outputJson));         // ASSERT that what we're expecting is what we got back.
     }
 
+
+    @Test
+    public void shouldReturn404StatusCodeIfMonthNumNotFound() throws Exception {
+        mockMvc.perform(get("/month/19"))
+                .andDo(print())
+                .andExpect(status().isNotFound());
+    }
+
+
+    @Test
+    public void shouldReturn422StatusCodeIfInputOutOfRange() throws Exception {
+        mockMvc.perform(get("/month/something"))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());             // ASSERT (status code is 422)
+    }
+
+    @Test
+    public void shouldReturnNonEmptyValueForRandomMonth() throws Exception {
+        mockMvc.perform(get("/randomMonth"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isNotEmpty()
+                );
+    }
+
+    @Test
+    public void shouldReturnAValueFromMonthList() throws Exception {
+        mockMvc.perform(get("/randomMonth"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.monthName").isNotEmpty())//$ placeholder string should not be empty
+                .andExpect(jsonPath("$.monthNumber").isNotEmpty());
+    }
+
 }
