@@ -39,12 +39,17 @@ public class MathSolutionControllerTest {
         MathSolution inputOperation = new MathSolution();
         inputOperation.setOperand1(4);
         inputOperation.setOperand2(5);
-        inputOperation.setAnswer(9);
         inputOperation.setOperation("add");
+
+        MathSolution outputOperation = new MathSolution();
+        outputOperation.setOperand1(4);
+        outputOperation.setOperand2(5);
+        outputOperation.setAnswer(9);
 
 
         // Convert Java Object to JSON.
         String inputJson = mapper.writeValueAsString(inputOperation);
+        String outputJson = mapper.writeValueAsString(outputOperation);
 
         // ACT
         mockMvc.perform(
@@ -64,11 +69,16 @@ public class MathSolutionControllerTest {
         MathSolution inputOperation = new MathSolution();
         inputOperation.setOperand1(12);
         inputOperation.setOperand2(5);
-        inputOperation.setAnswer(7);
         inputOperation.setOperation("sub");
+
+        MathSolution outputOperation = new MathSolution();
+        outputOperation.setOperand1(12);
+        outputOperation.setOperand2(5);
+        outputOperation.setAnswer(7);
 
         // Convert Java Object to JSON.
         String inputJson = mapper.writeValueAsString(inputOperation);
+        String outputJson = mapper.writeValueAsString(outputOperation);
 
         // ACT
         mockMvc.perform(
@@ -87,11 +97,16 @@ public class MathSolutionControllerTest {
         MathSolution inputOperation = new MathSolution();
         inputOperation.setOperand1(6);
         inputOperation.setOperand2(3);
-        inputOperation.setAnswer(9);
         inputOperation.setOperation("mul");
+
+        MathSolution outputOperation = new MathSolution();
+        outputOperation.setOperand1(6);
+        outputOperation.setOperand2(3);
+        outputOperation.setAnswer(18);
 
         // Convert Java Object to JSON.
         String inputJson = mapper.writeValueAsString(inputOperation);
+        String outputJson = mapper.writeValueAsString(outputOperation);
 
         // ACT
         mockMvc.perform(
@@ -104,47 +119,19 @@ public class MathSolutionControllerTest {
                 .andExpect(content().json("{\"operand1\":6,\"operand2\":3,\"operation\":\"multiply\",\"answer\":18}"));       // ASSERT (status code is 422)
     }
 
-
     @Test
-    public void shouldReturn422StatusIfMissingOperandOrIfOperandsAreNotBothNumbersAdd () throws Exception {
-        String operand1;
+    public void shouldReturnSuccessfulResponsewhenDivTwoInt() throws Exception {
+
         // ARRANGE
         MathSolution inputOperation = new MathSolution();
-        inputOperation.setOperand1(Integer.parseInt(""));
-        inputOperation.setOperand2(6);
-        inputOperation.setAnswer(12);
-        inputOperation.setOperation("add");
-
-        // Convert Java Object to JSON.
-        String inputJson = mapper.writeValueAsString(inputOperation);
-
-        // ACT
-        mockMvc.perform(
-                        post("/add")               // Perform the POST request.
-                                .content(inputJson)           // Set the request body.
-                                .contentType(MediaType.APPLICATION_JSON)    // Tell the server it's in JSON format.
-                )
-                .andDo(print())                                           // Print results to console.
-                .andExpect(status().isUnprocessableEntity());             // ASSERT (status code is 422)
-    }
-
-
-    @Test
-    public void shouldReturn422StatusIfMissingOperandOrIfOperandsAreNotBothNumbersSub () throws Exception {
-
-        // ARRANGE
-       MathSolution inputOperation = new MathSolution();
-        inputOperation.setOperand1(8);
+        inputOperation.setOperand1(10);
         inputOperation.setOperand2(2);
-        //inputOperation.setAnswer(6);
-        inputOperation.setOperation("sub");
-
+        inputOperation.setOperation("div");
 
         MathSolution outputOperation = new MathSolution();
-        outputOperation.setOperand1(8);
+        outputOperation.setOperand1(10);
         outputOperation.setOperand2(2);
-        outputOperation.setAnswer(6);
-
+        outputOperation.setAnswer(5);
 
         // Convert Java Object to JSON.
         String inputJson = mapper.writeValueAsString(inputOperation);
@@ -152,43 +139,119 @@ public class MathSolutionControllerTest {
 
         // ACT
         mockMvc.perform(
-                        post("/subtract")                                // Perform the POST request.
+                        post("/division")                                // Perform the POST request.
                                 .content(inputJson)                               // Set the request body.
                                 .contentType(MediaType.APPLICATION_JSON)          // Tell the server it's in JSON format.
                 )
-                .andDo(print())                                           // Print results to console.
-                .andExpect(status().isUnprocessableEntity());             // ASSERT (status code is 422)
+                .andDo(print())                                                     // Print results to console.
+                .andExpect(status().isCreated())
+                .andExpect(content().json("{\"operand1\":10,\"operand2\":2,\"operation\":\"division\",\"answer\":5}"));       // ASSERT (status code is 422)
     }
 
-
-
     @Test
-    public void shouldReturn422StatusIfMissingOperandOrIfOperandsAreNotBothNumbersDiv () throws Exception {
-
+    public void shouldReturn422StatusIfOperand2IsZero() throws Exception {
         // ARRANGE
         MathSolution inputOperation = new MathSolution();
         inputOperation.setOperand1(10);
-        inputOperation.setOperand2(2);
-        inputOperation.setAnswer(5);
-        inputOperation.setOperation("div");
-
+        inputOperation.setOperand2(0);
         // Convert Java Object to JSON.
         String inputJson = mapper.writeValueAsString(inputOperation);
 
         // ACT
         mockMvc.perform(
-                        post("/divide")                                // Perform the POST request.
+                        post("/division")                                    // Perform the POST request.
                                 .content(inputJson)                               // Set the request body.
                                 .contentType(MediaType.APPLICATION_JSON)          // Tell the server it's in JSON format.
                 )
+                .andDo(print())                                                     // Print results to console.
+                .andExpect(status().isUnprocessableEntity());                      // ASSERT (status code is 422)
+
+    }
+
+    @Test
+    public void shouldReturn422StatusIfOperand1OrOperand2AreNotBothNumbersAdd() throws Exception {
+        // ARRANGE
+        MathSolution solution1 = new MathSolution();
+
+        // Convert Java Object to JSON.
+        String inputJson = mapper.writeValueAsString(solution1);
+
+        // ACT
+        mockMvc.perform(
+                        post("/add")                                // Perform the POST request.
+                                .content(inputJson)                               // Set the request body.
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content("{\"operand1\":\"something\",\"operand2\":19}")// Tell the server it's in JSON format.
+                )
                 .andDo(print())                                           // Print results to console.
                 .andExpect(status().isUnprocessableEntity());             // ASSERT (status code is 422)
-
     }
 
-//    @Test
-//    public void shouldReturn422StatusIfMissingOperandOrIfOperandsAreNotBothNumbersMul () throws Exception {
-//
-//    }
+    @Test
+    public void shouldReturn422StatusIfOperand1OrOperand2AreNotBothNumbersSub () throws Exception {
+
+        // ARRANGE
+       MathSolution inputOperation = new MathSolution();
+
+        // Convert Java Object to JSON.
+        String inputJson = mapper.writeValueAsString(inputOperation);
+        //String outputJson = mapper.writeValueAsString(outputOperation);
+
+        // ACT
+        mockMvc.perform(
+                        post("/subtract")
+                                .content(inputJson)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content("{\"operand1\":something,\"operand2\":19}")   // input
+                )
+                .andDo(print())                                           // Print results to console.
+                .andExpect(status().isUnprocessableEntity());            // ASSERT (status code is 422)
     }
+
+
+    @Test
+    public void shouldReturn422StatusIfOperand1OrOperand2AreNotBothNumbersMul () throws Exception {
+        // ARRANGE
+        MathSolution inputOperation = new MathSolution();
+
+        // Convert Java Object to JSON.
+        String inputJson = mapper.writeValueAsString(inputOperation);
+
+
+        // ACT
+        mockMvc.perform(
+                        post("/multiply")
+                                .content(inputJson)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content("{\"operand1\":something,\"operand2\":19}")   // input
+                )
+                .andDo(print())                                           // Print results to console.
+                .andExpect(status().isUnprocessableEntity());            // ASSERT (status code is 422)
+    }
+
+    @Test
+    public void shouldReturn422StatusIfOperand1OrOperand2AreNotBothNumbersDiv() throws Exception {
+        // ARRANGE
+        MathSolution inputOperation = new MathSolution();
+
+        // Convert Java Object to JSON.
+        String inputJson = mapper.writeValueAsString(inputOperation);
+
+
+        // ACT
+        mockMvc.perform(
+                        post("/division")
+                                .content(inputJson)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content("{\"operand1\":something,\"operand2\":19}")   // input
+                )
+                .andDo(print())                                           // Print results to console.
+                .andExpect(status().isUnprocessableEntity());            // ASSERT (status code is 422)
+    }
+
+
+
+   }
+
+
 

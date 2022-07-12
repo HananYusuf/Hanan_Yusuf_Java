@@ -1,5 +1,8 @@
 package com.company.M2ChallengeYusufHanan.model;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -7,7 +10,12 @@ import java.util.Objects;
 
 public class MathSolution {
 
+    @NotNull(message = "Can't be null")//int property can't be null
+    @Max(8000000)
     private int operand1;
+
+    @NotNull(message = "Can't be null")
+    @Max(8000000)
     private int operand2;
     private String operation;
     private int answer;

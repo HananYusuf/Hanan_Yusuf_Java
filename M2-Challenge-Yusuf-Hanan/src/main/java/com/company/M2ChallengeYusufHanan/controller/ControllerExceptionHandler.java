@@ -3,6 +3,7 @@ import com.company.M2ChallengeYusufHanan.exceptions.NotFoundException;
 import com.company.M2ChallengeYusufHanan.model.CustomErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -63,5 +64,26 @@ public class ControllerExceptionHandler {
         ResponseEntity<CustomErrorResponse> responseEntity = new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
         return responseEntity;
 
+            }
+
+            // handles arithmetic exception when dividing by zero
+    @ExceptionHandler(value = ArithmeticException.class)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    public ResponseEntity<CustomErrorResponse> arithmeticException(ArithmeticException e) {
+        CustomErrorResponse error = new CustomErrorResponse(HttpStatus.UNPROCESSABLE_ENTITY.toString(), e.getMessage());
+        error.setStatus((HttpStatus.UNPROCESSABLE_ENTITY.value()));
+        error.setTimestamp(LocalDateTime.now());
+        ResponseEntity<CustomErrorResponse> responseEntity = new ResponseEntity<>(error, HttpStatus.UNPROCESSABLE_ENTITY);
+        return responseEntity;
+    }
+
+    @ExceptionHandler(value = HttpMessageNotReadableException.class)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    public ResponseEntity<CustomErrorResponse> httpMessageNotReadableException(HttpMessageNotReadableException e) {
+        CustomErrorResponse error = new CustomErrorResponse(HttpStatus.UNPROCESSABLE_ENTITY.toString(), e.getMessage());
+        error.setStatus((HttpStatus.UNPROCESSABLE_ENTITY.value()));
+        error.setTimestamp(LocalDateTime.now());
+        ResponseEntity<CustomErrorResponse> responseEntity = new ResponseEntity<>(error, HttpStatus.UNPROCESSABLE_ENTITY);
+        return responseEntity;
     }
 }
