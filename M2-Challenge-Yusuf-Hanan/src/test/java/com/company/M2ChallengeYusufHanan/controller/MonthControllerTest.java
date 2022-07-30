@@ -50,7 +50,7 @@ public class MonthControllerTest {
     }
 
     @Test
-    public void shouldReturnRecordById() throws Exception {
+    public void shouldReturnMonthById() throws Exception {
 
         // ARRANGE
         Month outputRecord = new Month();
