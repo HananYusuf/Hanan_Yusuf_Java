@@ -1,11 +1,8 @@
 package com.trilogyed.gamestoreinvoicing.util.feign;
 
-import com.trilogyed.gamestoreinvoicing.model.Invoice;
 import com.trilogyed.gamestoreinvoicing.viewModel.ConsoleViewModel;
 import com.trilogyed.gamestoreinvoicing.viewModel.GameViewModel;
-import com.trilogyed.gamestoreinvoicing.viewModel.InvoiceViewModel;
 import com.trilogyed.gamestoreinvoicing.viewModel.TShirtViewModel;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -17,15 +14,6 @@ import java.util.Optional;
 @FeignClient(name="gamestore-catalog")
 public interface GameStoreCatalogClient {
 
-//    @PostMapping(value= "/invoice")
-//    public Invoice createInvoice(@RequestBody Invoice invoice);
-
-//    @RequestMapping(value= "/game", method = RequestMethod.GET)
-//    public String geAllGames();
-//
-//    @RequestMapping(value= "/game/{id}", method = RequestMethod.GET)
-//    public String getGamesById(int id);
-
 //Game
     @GetMapping("/game")
     @ResponseStatus(HttpStatus.OK)
@@ -33,7 +21,7 @@ public interface GameStoreCatalogClient {
 
     @GetMapping("/game/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public GameViewModel getGameInfo(@PathVariable("id") long gameId);
+    public Optional<GameViewModel> getGameInfo(@PathVariable("id") long gameId);
 
     @PutMapping("/game")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -59,15 +47,28 @@ public interface GameStoreCatalogClient {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public TShirtViewModel getTShirt(@PathVariable("id") int tShirtId);
+    public Optional<TShirtViewModel> getTShirt(@PathVariable("id") long tShirtId);
 
-    //Console
-
-    @GetMapping("/{id}")
+    @GetMapping("/size/{size}")
     @ResponseStatus(HttpStatus.OK)
+    public List<TShirtViewModel> getTShirtsBySize(@PathVariable("size") String size);
+
+    @GetMapping("/color/{color}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<TShirtViewModel> getTShirtsByColor(@PathVariable("color") String color);
+
+//Console
+    @GetMapping()
+    @ResponseStatus(HttpStatus.OK)
+    public List<ConsoleViewModel> getAllConsoles();
+
+    @GetMapping("/console/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    //returning optional consoleViewModel
     public Optional<ConsoleViewModel> getConsole(@PathVariable("id") long consoleId);
-
-
-
+    @GetMapping("/console/{id}")
+    public ConsoleViewModel getConsoleById(@PathVariable("id") long consoleId);
+    @GetMapping("/manufacturer/{manufacturer}")
+    public List<ConsoleViewModel> getConsoleByManufacturer(@PathVariable("manufacturer") String manu);
 
 }

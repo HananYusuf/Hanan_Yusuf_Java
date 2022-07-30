@@ -13,8 +13,11 @@ import com.trilogyed.gamestoreinvoicing.viewModel.InvoiceViewModel;
 import com.trilogyed.gamestoreinvoicing.viewModel.TShirtViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -44,13 +47,13 @@ public class GameStoreInvoicingServiceLayer {
         this.client = client;
     }
 
-    //Game
+//Game
     public List<GameViewModel> getGames() {
         List<GameViewModel> gameList = this.client.getAllGames();
         return gameList;
     }
 
-    public GameViewModel getGameById(@PathVariable("id") long gameId){
+    public Optional<GameViewModel> getGameById(@PathVariable("id") long gameId){
         return client.getGameInfo(gameId);
     }
 
@@ -71,15 +74,35 @@ public class GameStoreInvoicingServiceLayer {
         return tshirtList;
     }
 
-    public TShirtViewModel getTShirt(@PathVariable("id") int tShirtId){
+    public Optional<TShirtViewModel> getTShirt(@PathVariable("id") int tShirtId){
         return client.getTShirt(tShirtId);
     }
 
+      public List<TShirtViewModel> getTShirtsBySize(@PathVariable("size") String size) {
+        return client.getTShirtsBySize(size);
+    }
+
+    public List<TShirtViewModel> getTShirtsByColor(@PathVariable("color") String color) {
+        return client.getTShirtsByColor(color);
+    }
+
+//Console
+
+    public List<ConsoleViewModel> getAllConsoles() {
+        List<ConsoleViewModel> consoleList= this.client.getAllConsoles();
+        return consoleList;
+        }
     public Optional<ConsoleViewModel> getConsole(@PathVariable("id") long consoleId) {
         return client.getConsole(consoleId);
     }
+    public ConsoleViewModel getConsoleById(@PathVariable("id") long consoleId){
+        return client.getConsole(consoleId).get();
+    }
+    public List<ConsoleViewModel> getConsoleByManufacturer(@PathVariable("manufacturer") String manu) {
+        return client.getConsoleByManufacturer(manu);
+    }
 
-    //Invoice
+//Invoice
     public InvoiceViewModel createInvoice(InvoiceViewModel invoiceViewModel) {
 
         //validation...
@@ -108,56 +131,58 @@ public class GameStoreInvoicingServiceLayer {
         //Checks the item type and get the correct unit price
         //Check if we have enough quantity
         if (invoiceViewModel.getItemType().equals(CONSOLE_ITEM_TYPE)) {
-
+               ConsoleViewModel tempCon = null;
+               //get optional consoleId from the feign client accessed the console. returns optional object view model
             Optional<ConsoleViewModel> console = client.getConsole(invoice.getItemId());
 
-//            if (returnVal.isPresent()) {
-//                tempCon = returnVal.get();
-//            } else {
-//                throw new IllegalArgumentException("Requested item is unavailable.");
-//            }
+            if (console.isPresent()) {
+                tempCon = console.get();
+            } else {
+                throw new IllegalArgumentException("Requested item is unavailable.");
+            }
 
-//            if (invoiceViewModel.getQuantity() > console.get().getQuantity()) {
-//                throw new IllegalArgumentException("Requested quantity is unavailable.");
-//            }
+            if (invoiceViewModel.getQuantity() > console.get().getQuantity()) {
+                throw new IllegalArgumentException("Requested quantity is unavailable.");
+            }
 
             invoice.setUnitPrice(console.get().getPrice());
 
        }
-//        else if (invoiceViewModel.getItemType().equals(GAME_ITEM_TYPE)) {
-//            Game tempGame = null;
-//            Optional<Game> returnVal = gameRepo.findById(invoiceViewModel.getItemId());
-//
-//            if (returnVal.isPresent()) {
-//                tempGame = returnVal.get();
-//            } else {
-//                throw new IllegalArgumentException("Requested item is unavailable.");
-//            }
-//
-//            if(invoiceViewModel.getQuantity() >  tempGame.getQuantity()){
-//                throw new IllegalArgumentException("Requested quantity is unavailable.");
-//            }
-//            invoice.setUnitPrice(tempGame.getPrice());
-//
-//        } else if (invoiceViewModel.getItemType().equals(TSHIRT_ITEM_TYPE)) {
-//            TShirt tempTShirt = null;
-//            Optional<TShirt> returnVal = tShirtRepo.findById(invoiceViewModel.getItemId());
-//
-//            if (returnVal.isPresent()) {
-//                tempTShirt = returnVal.get();
-//            } else {
-//                throw new IllegalArgumentException("Requested item is unavailable.");
-//            }
-//
-//            if(invoiceViewModel.getQuantity() >  tempTShirt.getQuantity()){
-//                throw new IllegalArgumentException("Requested quantity is unavailable.");
-//            }
-//            invoice.setUnitPrice(tempTShirt.getPrice());
-//
-//        } else {
-//            throw new IllegalArgumentException(invoiceViewModel.getItemType()+
-//                    ": Unrecognized Item type. Valid ones: T-Shirt, Console, or Game");
-//        }
+        else if (invoiceViewModel.getItemType().equals(GAME_ITEM_TYPE)) {
+            GameViewModel tempGame = null;
+            Optional<GameViewModel> returnVal = client.getGameInfo(invoice.getItemId());
+
+            if (returnVal.isPresent()) {
+                tempGame = returnVal.get();
+            } else {
+                throw new IllegalArgumentException("Requested item is unavailable.");
+            }
+
+            if(invoiceViewModel.getQuantity() >  tempGame.getQuantity()){
+                throw new IllegalArgumentException("Requested quantity is unavailable.");
+            }
+            invoice.setUnitPrice(tempGame.getPrice());
+
+       }
+        else if (invoiceViewModel.getItemType().equals(TSHIRT_ITEM_TYPE)) {
+            TShirtViewModel tempTShirt = null;
+            Optional<TShirtViewModel> returnVal = client.getTShirt(invoice.getId());;
+
+            if (returnVal.isPresent()) {
+                tempTShirt = returnVal.get();
+            } else {
+                throw new IllegalArgumentException("Requested item is unavailable.");
+            }
+
+            if(invoiceViewModel.getQuantity() >  tempTShirt.getQuantity()){
+                throw new IllegalArgumentException("Requested quantity is unavailable.");
+            }
+            invoice.setUnitPrice(tempTShirt.getPrice());
+
+        } else {
+            throw new IllegalArgumentException(invoiceViewModel.getItemType()+
+                    ": Unrecognized Item type. Valid ones: T-Shirt, Console, or Game");
+        }
 
             invoice.setQuantity(invoiceViewModel.getQuantity());
 
@@ -213,6 +238,47 @@ public class GameStoreInvoicingServiceLayer {
             return buildInvoiceViewModel(invoice);
         }
 
+
+    public InvoiceViewModel getInvoice(long id) {
+        Optional<Invoice> invoice = invoiceRepo.findById(id);
+        if (invoice == null)
+            return null;
+        else
+            return buildInvoiceViewModel(invoice.get());
+    }
+
+    public List<InvoiceViewModel> getAllInvoices() {
+        List<Invoice> invoiceList = invoiceRepo.findAll();
+        List<InvoiceViewModel> ivmList = new ArrayList<>();
+        List<InvoiceViewModel> exceptionList = null;
+
+        if (invoiceList == null) {
+            return exceptionList;
+        } else {
+            invoiceList.stream().forEach(i -> {
+                ivmList.add(buildInvoiceViewModel(i));
+            });
+        }
+        return ivmList;
+    }
+
+    public List<InvoiceViewModel> getInvoicesByCustomerName(String name) {
+        List<Invoice> invoiceList = invoiceRepo.findByName(name);
+        List<InvoiceViewModel> ivmList = new ArrayList<>();
+        List<InvoiceViewModel> exceptionList = null;
+
+        if (invoiceList == null) {
+            return exceptionList;
+        } else {
+            invoiceList.stream().forEach(i -> ivmList.add(buildInvoiceViewModel(i)));
+        }
+        return ivmList;
+    }
+
+    public void deleteInvoice(long id){
+        invoiceRepo.deleteById(id);
+    }
+
     public InvoiceViewModel buildInvoiceViewModel(Invoice invoice) {
         InvoiceViewModel invoiceViewModel = new InvoiceViewModel();
         invoiceViewModel.setId(invoice.getId());
@@ -233,5 +299,6 @@ public class GameStoreInvoicingServiceLayer {
 
         return invoiceViewModel;
     }
+
     }
 

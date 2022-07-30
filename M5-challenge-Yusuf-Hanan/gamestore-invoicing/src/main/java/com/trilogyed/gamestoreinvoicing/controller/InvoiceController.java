@@ -1,7 +1,5 @@
 package com.trilogyed.gamestoreinvoicing.controller;
 
-//import com.trilogyed.gamestore.service.GameStoreServiceLayer;
-//import com.trilogyed.gamestore.viewModel.InvoiceViewModel;
 import com.trilogyed.gamestoreinvoicing.service.GameStoreInvoicingServiceLayer;
 import com.trilogyed.gamestoreinvoicing.viewModel.ConsoleViewModel;
 import com.trilogyed.gamestoreinvoicing.viewModel.GameViewModel;
@@ -33,7 +31,7 @@ public class InvoiceController {
     }
 
     @GetMapping("/game/{id}")
-    public GameViewModel getGameInfo(@PathVariable("id") long gameId) {
+    public Optional<GameViewModel> getGameInfo(@PathVariable("id") long gameId) {
         return service.getGameById(gameId);
     }
 
@@ -59,52 +57,76 @@ public class InvoiceController {
         return service.getTShirts();
     }
 
-
-    @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public Optional<ConsoleViewModel> getConsole(@PathVariable("id") long consoleId) {
-        return service.getConsole(consoleId);
+    @GetMapping("/tshirt/{id}")
+    public Optional<TShirtViewModel> getTShirt(@PathVariable("id") int tShirtId) {
+        return service.getTShirt(tShirtId);
+    }
+    @GetMapping("/size/{size}")
+    public List<TShirtViewModel> getTShirtsBySize(@PathVariable("size") String size) {
+        return service.getTShirtsBySize(size);
     }
 
+    @GetMapping("/color/{color}")
+    public List<TShirtViewModel> getTShirtsByColor(@PathVariable("color") String color) {
+        return service.getTShirtsByColor(color);
+    }
+
+//Console
+    @GetMapping("/console")
+    public List<ConsoleViewModel> getAllConsoles() {
+        return service.getAllConsoles();
+    }
+
+    @GetMapping("/console/{id}")
+    public ConsoleViewModel getConsole(@PathVariable("id") long consoleId) {
+        return service.getConsoleById(consoleId);
+    }
+
+    @GetMapping("/manufacturer/{manufacturer}")
+    public List<ConsoleViewModel> getConsoleByManufacturer(@PathVariable("manufacturer") String manu) {
+        return service.getConsoleByManufacturer(manu);
+    }
+
+//Invoice
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public InvoiceViewModel purchaseItem(@RequestBody @Valid InvoiceViewModel invoiceViewModel) {
         invoiceViewModel = service.createInvoice(invoiceViewModel);
         return invoiceViewModel;
     }
-//
-//    @GetMapping("/{id}")
-//    @ResponseStatus(HttpStatus.OK)
-//    public InvoiceViewModel findInvoice(@PathVariable("id") long invoiceId) {
-//        InvoiceViewModel invoiceViewModel = service.getInvoice(invoiceId);
-//        if (invoiceViewModel == null) {
-//            throw new IllegalArgumentException("Invoice could not be retrieved for id " + invoiceId);
-//        } else {
-//            return invoiceViewModel;
-//        }
-//    }
-//
-//    @GetMapping()
-//    @ResponseStatus(HttpStatus.OK)
-//    public List<InvoiceViewModel> findAllInvoices() {
-//        List<InvoiceViewModel> invoiceViewModelList = service.getAllInvoices();
-//
-//        if (invoiceViewModelList == null || invoiceViewModelList.isEmpty()) {
-//            throw new IllegalArgumentException("No invoices were found.");
-//        } else {
-//            return invoiceViewModelList;
-//        }
-//    }
-//
-//    @GetMapping("/cname/{name}")
-//    @ResponseStatus(HttpStatus.OK)
-//    public List<InvoiceViewModel> findInvoicesByCustomerName(@PathVariable String name) {
-//        List<InvoiceViewModel> invoiceViewModelList = service.getInvoicesByCustomerName(name);
-//
-//        if (invoiceViewModelList == null || invoiceViewModelList.isEmpty()) {
-//            throw new IllegalArgumentException("No invoices were found for: "+name);
-//        } else {
-//            return invoiceViewModelList;
-//        }
-//    }
+
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public InvoiceViewModel findInvoice(@PathVariable("id") long invoiceId) {
+        InvoiceViewModel invoiceViewModel = service.getInvoice(invoiceId);
+        if (invoiceViewModel == null) {
+            throw new IllegalArgumentException("Invoice could not be retrieved for id " + invoiceId);
+        } else {
+            return invoiceViewModel;
+        }
+    }
+
+    @GetMapping()
+    @ResponseStatus(HttpStatus.OK)
+    public List<InvoiceViewModel> findAllInvoices() {
+        List<InvoiceViewModel> invoiceViewModelList = service.getAllInvoices();
+
+        if (invoiceViewModelList == null || invoiceViewModelList.isEmpty()) {
+            throw new IllegalArgumentException("No invoices were found.");
+        } else {
+            return invoiceViewModelList;
+        }
+    }
+
+    @GetMapping("/cname/{name}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<InvoiceViewModel> findInvoicesByCustomerName(@PathVariable String name) {
+        List<InvoiceViewModel> invoiceViewModelList = service.getInvoicesByCustomerName(name);
+
+        if (invoiceViewModelList == null || invoiceViewModelList.isEmpty()) {
+            throw new IllegalArgumentException("No invoices were found for: "+name);
+        } else {
+            return invoiceViewModelList;
+        }
+    }
 }
