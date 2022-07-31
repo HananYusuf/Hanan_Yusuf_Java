@@ -53,20 +53,26 @@ public class InvoiceController {
 //Tshirt
 
     @GetMapping("/tshirt")
-    public List<TShirtViewModel> getTshirt() {
-        return service.getTShirts();
+    public List<TShirtViewModel> getAllTShirts() {
+        return service.getAllTShirts();
     }
 
     @GetMapping("/tshirt/{id}")
     public Optional<TShirtViewModel> getTShirt(@PathVariable("id") int tShirtId) {
         return service.getTShirt(tShirtId);
     }
-    @GetMapping("/size/{size}")
+
+    @PostMapping("/tshirt")
+    @ResponseStatus(HttpStatus.CREATED)
+    TShirtViewModel createTShirt(@RequestBody @Valid TShirtViewModel tShirtViewModel){
+        return service.createTShirt(tShirtViewModel);
+    }
+    @GetMapping("/tshirt/size/{size}")
     public List<TShirtViewModel> getTShirtsBySize(@PathVariable("size") String size) {
         return service.getTShirtsBySize(size);
     }
 
-    @GetMapping("/color/{color}")
+    @GetMapping("/tshirt/color/{color}")
     public List<TShirtViewModel> getTShirtsByColor(@PathVariable("color") String color) {
         return service.getTShirtsByColor(color);
     }
@@ -82,13 +88,13 @@ public class InvoiceController {
         return service.getConsoleById(consoleId);
     }
 
-    @GetMapping("/manufacturer/{manufacturer}")
+    @GetMapping("/console/manufacturer/{manufacturer}")
     public List<ConsoleViewModel> getConsoleByManufacturer(@PathVariable("manufacturer") String manu) {
         return service.getConsoleByManufacturer(manu);
     }
 
 //Invoice
-    @PostMapping
+    @PostMapping("/createInvoice")
     @ResponseStatus(HttpStatus.CREATED)
     public InvoiceViewModel purchaseItem(@RequestBody @Valid InvoiceViewModel invoiceViewModel) {
         invoiceViewModel = service.createInvoice(invoiceViewModel);

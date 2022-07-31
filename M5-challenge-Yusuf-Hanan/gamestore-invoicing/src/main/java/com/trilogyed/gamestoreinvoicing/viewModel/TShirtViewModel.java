@@ -26,6 +26,26 @@ public class TShirtViewModel {
     @Max(value = 50000, message = "Max Quantity is 50,000")
     private long quantity;
 
+    public TShirtViewModel(long id, String size, String color, String description, BigDecimal price, long quantity) {
+        this.id = id;
+        this.size = size;
+        this.color = color;
+        this.description = description;
+        this.price = price;
+        this.quantity = quantity;
+    }
+
+    public TShirtViewModel(String size, String color, String description, BigDecimal price, long quantity) {
+        this.size = size;
+        this.color = color;
+        this.description = description;
+        this.price = price;
+        this.quantity = quantity;
+    }
+
+    public TShirtViewModel() {
+    }
+
     public String getSize() {
         return size;
     }

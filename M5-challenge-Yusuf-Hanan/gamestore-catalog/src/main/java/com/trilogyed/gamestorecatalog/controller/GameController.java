@@ -1,7 +1,4 @@
 package com.trilogyed.gamestorecatalog.controller;
-
-//import com.trilogyed.gamestore.viewModel.GameViewModel;
-//import com.trilogyed.gamestore.service.GameStoreServiceLayer;
 import com.trilogyed.gamestorecatalog.service.GameStoreCatalogServiceLayer;
 import com.trilogyed.gamestorecatalog.viewModel.GameViewModel;
 import org.springframework.beans.factory.annotation.Autowired;

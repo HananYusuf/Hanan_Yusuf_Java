@@ -45,20 +45,23 @@ public interface GameStoreCatalogClient {
     @ResponseStatus(HttpStatus.OK)
     public List<TShirtViewModel> getAllTShirts();
 
-    @GetMapping("/{id}")
+    @GetMapping("/tshirt/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Optional<TShirtViewModel> getTShirt(@PathVariable("id") long tShirtId);
 
-    @GetMapping("/size/{size}")
+    @PostMapping("/tshirt")
+    @ResponseStatus(HttpStatus.CREATED)
+    TShirtViewModel createTShirt(@RequestBody @Valid TShirtViewModel tShirtViewModel);
+    @GetMapping("/tshirt/size/{size}")
     @ResponseStatus(HttpStatus.OK)
     public List<TShirtViewModel> getTShirtsBySize(@PathVariable("size") String size);
 
-    @GetMapping("/color/{color}")
+    @GetMapping("/tshirt/color/{color}")
     @ResponseStatus(HttpStatus.OK)
     public List<TShirtViewModel> getTShirtsByColor(@PathVariable("color") String color);
 
 //Console
-    @GetMapping()
+    @GetMapping("/console")
     @ResponseStatus(HttpStatus.OK)
     public List<ConsoleViewModel> getAllConsoles();
 
@@ -68,7 +71,7 @@ public interface GameStoreCatalogClient {
     public Optional<ConsoleViewModel> getConsole(@PathVariable("id") long consoleId);
     @GetMapping("/console/{id}")
     public ConsoleViewModel getConsoleById(@PathVariable("id") long consoleId);
-    @GetMapping("/manufacturer/{manufacturer}")
+    @GetMapping("/console/manufacturer/{manufacturer}")
     public List<ConsoleViewModel> getConsoleByManufacturer(@PathVariable("manufacturer") String manu);
 
 }

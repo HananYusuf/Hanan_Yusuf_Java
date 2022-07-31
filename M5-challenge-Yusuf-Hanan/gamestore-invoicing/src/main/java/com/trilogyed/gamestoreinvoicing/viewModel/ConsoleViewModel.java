@@ -26,6 +26,26 @@ public class ConsoleViewModel {
     @Max(value = 50000, message = "Max Quantity is 50,000")
     private long quantity;
 
+    public ConsoleViewModel(long id, String model, String manufacturer, String memoryAmount, String processor, BigDecimal price, long quantity) {
+        this.id = id;
+        this.model = model;
+        this.manufacturer = manufacturer;
+        this.memoryAmount = memoryAmount;
+        this.processor = processor;
+        this.price = price;
+        this.quantity = quantity;
+    }
+    public ConsoleViewModel() {
+    }
+    public ConsoleViewModel(String model, String manufacturer, String memoryAmount, String processor, BigDecimal price, long quantity) {
+        this.model = model;
+        this.manufacturer = manufacturer;
+        this.memoryAmount = memoryAmount;
+        this.processor = processor;
+        this.price = price;
+        this.quantity = quantity;
+    }
+
     public long getId() {
         return id;
     }

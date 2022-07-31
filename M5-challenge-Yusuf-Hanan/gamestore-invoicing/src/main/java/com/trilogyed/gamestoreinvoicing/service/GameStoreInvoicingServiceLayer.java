@@ -17,8 +17,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -69,13 +71,17 @@ public class GameStoreInvoicingServiceLayer {
     }
 
 //Tshirt
-    public List<TShirtViewModel> getTShirts(){
+    public List<TShirtViewModel> getAllTShirts(){
         List<TShirtViewModel> tshirtList = this.client.getAllTShirts();
         return tshirtList;
     }
 
     public Optional<TShirtViewModel> getTShirt(@PathVariable("id") int tShirtId){
         return client.getTShirt(tShirtId);
+    }
+
+    public TShirtViewModel createTShirt(@RequestBody @Valid TShirtViewModel tShirtViewModel){
+        return client.createTShirt(tShirtViewModel);
     }
 
       public List<TShirtViewModel> getTShirtsBySize(@PathVariable("size") String size) {

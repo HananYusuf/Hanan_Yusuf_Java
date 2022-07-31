@@ -30,6 +30,28 @@ public class GameViewModel {
     @Max(value = 50000, message = "Max Quantity is 50,000")
     private long quantity;
 
+    public GameViewModel(long id, String title, String esrbRating, String description, BigDecimal price, String studio, long quantity) {
+        this.id = id;
+        this.title = title;
+        this.esrbRating = esrbRating;
+        this.description = description;
+        this.price = price;
+        this.studio = studio;
+        this.quantity = quantity;
+    }
+
+    public GameViewModel(String title, String esrbRating, String description, BigDecimal price, String studio, long quantity) {
+        this.title = title;
+        this.esrbRating = esrbRating;
+        this.description = description;
+        this.price = price;
+        this.studio = studio;
+        this.quantity = quantity;
+    }
+
+    public GameViewModel() {
+    }
+
     public String getTitle() {
         return title;
     }
