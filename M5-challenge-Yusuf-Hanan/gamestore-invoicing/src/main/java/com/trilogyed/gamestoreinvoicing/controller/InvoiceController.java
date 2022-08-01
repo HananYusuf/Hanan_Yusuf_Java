@@ -1,5 +1,6 @@
 package com.trilogyed.gamestoreinvoicing.controller;
 
+import com.trilogyed.gamestoreinvoicing.model.TShirt;
 import com.trilogyed.gamestoreinvoicing.service.GameStoreInvoicingServiceLayer;
 import com.trilogyed.gamestoreinvoicing.viewModel.ConsoleViewModel;
 import com.trilogyed.gamestoreinvoicing.viewModel.GameViewModel;
@@ -53,12 +54,12 @@ public class InvoiceController {
 //Tshirt
 
     @GetMapping("/tshirt")
-    public List<TShirtViewModel> getAllTShirts() {
+    public List<TShirt> getAllTShirts() {
         return service.getAllTShirts();
     }
 
     @GetMapping("/tshirt/{id}")
-    public Optional<TShirtViewModel> getTShirt(@PathVariable("id") int tShirtId) {
+    public Optional<TShirt> getTShirt(@PathVariable("id") int tShirtId) {
         return service.getTShirtById(tShirtId);
     }
     @PostMapping("/tshirt")
@@ -67,12 +68,12 @@ public class InvoiceController {
         return service.createTShirt(tShirtViewModel);
     }
     @GetMapping("/tshirt/size/{size}")
-    public List<TShirtViewModel> getTShirtsBySize(@PathVariable("size") String size) {
+    public List<TShirt> getTShirtsBySize(@PathVariable("size") String size) {
         return service.getTShirtsBySize(size);
     }
 
     @GetMapping("/tshirt/color/{color}")
-    public List<TShirtViewModel> getTShirtsByColor(@PathVariable("color") String color) {
+    public List<TShirt> getTShirtsByColor(@PathVariable("color") String color) {
         return service.getTShirtsByColor(color);
     }
 

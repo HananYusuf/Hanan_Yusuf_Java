@@ -2,6 +2,7 @@ package com.trilogyed.gamestoreinvoicing.service;
 
 import com.trilogyed.gamestoreinvoicing.model.Invoice;
 import com.trilogyed.gamestoreinvoicing.model.ProcessingFee;
+import com.trilogyed.gamestoreinvoicing.model.TShirt;
 import com.trilogyed.gamestoreinvoicing.model.Tax;
 import com.trilogyed.gamestoreinvoicing.repository.InvoiceRepository;
 import com.trilogyed.gamestoreinvoicing.repository.ProcessingFeeRepository;
@@ -72,26 +73,26 @@ public class GameStoreInvoicingServiceLayer {
     }
 
 //Tshirt
-    public List<TShirtViewModel> getAllTShirts(){
-        List<TShirtViewModel> tshirtList = this.client.getAllTShirts();
+    public List<TShirt> getAllTShirts(){
+        List<TShirt> tshirtList = this.client.getAllTShirts();
         return tshirtList;
     }
 
-    public Optional<TShirtViewModel> getTShirtById(@PathVariable("id") long tshirtId) {
+    public Optional<TShirt> getTShirtById(@PathVariable("id") long tshirtId) {
         return client.getTShirt(tshirtId);
     }
-    public Optional<TShirtViewModel> getTShirtById(@PathVariable("id") int tShirtId) {
+    public Optional<TShirt> getTShirtById(@PathVariable("id") int tShirtId) {
        return client.getTShirt(tShirtId);}
 
     public TShirtViewModel createTShirt(@RequestBody @Valid TShirtViewModel tShirtViewModel){
         return client.createTShirt(tShirtViewModel);
     }
 
-      public List<TShirtViewModel> getTShirtsBySize(@PathVariable("size") String size) {
+      public List<TShirt> getTShirtsBySize(@PathVariable("size") String size) {
         return client.getTShirtsBySize(size);
     }
 
-    public List<TShirtViewModel> getTShirtsByColor(@PathVariable("color") String color) {
+    public List<TShirt> getTShirtsByColor(@PathVariable("color") String color) {
         return client.getTShirtsByColor(color);
     }
 
@@ -174,8 +175,8 @@ public class GameStoreInvoicingServiceLayer {
 
        }
         else if (invoiceViewModel.getItemType().equals(TSHIRT_ITEM_TYPE)) {
-            TShirtViewModel tempTShirt = null;
-            Optional<TShirtViewModel> returnVal = client.getTShirt(invoice.getItemId());;
+            TShirt tempTShirt = null;
+            Optional<TShirt> returnVal = client.getTShirt(invoice.getItemId());;
 
             if (returnVal.isPresent()) {
                 tempTShirt = returnVal.get();

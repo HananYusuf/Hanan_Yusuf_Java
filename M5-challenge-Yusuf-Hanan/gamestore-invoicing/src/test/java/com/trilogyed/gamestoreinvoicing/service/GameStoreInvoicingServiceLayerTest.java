@@ -2,10 +2,12 @@ package com.trilogyed.gamestoreinvoicing.service;
 
 import com.trilogyed.gamestoreinvoicing.model.Invoice;
 import com.trilogyed.gamestoreinvoicing.model.ProcessingFee;
+import com.trilogyed.gamestoreinvoicing.model.TShirt;
 import com.trilogyed.gamestoreinvoicing.model.Tax;
 import com.trilogyed.gamestoreinvoicing.repository.InvoiceRepository;
 import com.trilogyed.gamestoreinvoicing.repository.ProcessingFeeRepository;
 import com.trilogyed.gamestoreinvoicing.repository.TaxRepository;
+import com.trilogyed.gamestoreinvoicing.util.feign.GameStoreCatalogClient;
 import com.trilogyed.gamestoreinvoicing.viewModel.InvoiceViewModel;
 import com.trilogyed.gamestoreinvoicing.viewModel.TShirtViewModel;
 import org.junit.Before;
@@ -30,26 +32,31 @@ public class GameStoreInvoicingServiceLayerTest {
     TaxRepository taxRepository;
     GameStoreInvoicingServiceLayer service;
 
+    GameStoreCatalogClient client;
+
      @Before
     public void setUp() throws Exception {
-        setUpInvoiceRepositoryMock();
-        setUpProcessingFeeRepositoryMock();
-        setUpTaxRepositoryMock();
+         setUpInvoiceRepositoryMock();
+         setUpProcessingFeeRepositoryMock();
+         setUpTaxRepositoryMock();
+         setUpGameStoreClientCatalog();
 
-//       service = new GameStoreInvoicingServiceLayer(invoiceRepository, taxRepository,
-//               processingFeeRepository);
+
+      service = new GameStoreInvoicingServiceLayer(invoiceRepository, taxRepository, processingFeeRepository, client);
+
     }
+
 
     //Testing Invoice Operations...
     @Test
     public void shouldCreateFindInvoice() {
-        TShirtViewModel tShirt = new TShirtViewModel();
-        tShirt.setSize("Medium");
-        tShirt.setColor("Blue");
-        tShirt.setDescription("V-Neck");
-        tShirt.setPrice(new BigDecimal("19.99"));
-        tShirt.setQuantity(5);
-        tShirt = service.createTShirt(tShirt);
+//        TShirtViewModel tShirt = new TShirtViewModel();
+//        tShirt.setSize("Medium");
+//        tShirt.setColor("Blue");
+//        tShirt.setDescription("V-Neck");
+//        tShirt.setPrice(new BigDecimal("19.99"));
+//        tShirt.setQuantity(5);
+//        tShirt = service.createTShirt(tShirt);
 
         InvoiceViewModel invoiceViewModel = new InvoiceViewModel();
         invoiceViewModel.setName("John Jake");
@@ -68,56 +75,6 @@ public class GameStoreInvoicingServiceLayerTest {
         assertEquals(invoiceViewModel, ivmfromService);
 
      }
-
-    @Test
-    public void createAndFindInvoice() {
-
-        Invoice invoice = new Invoice();
-        invoice.setId(1);
-        invoice.setName("James Brown");
-        invoice.setCity("New Haven");
-        invoice.setState("CT");
-        invoice.setZipcode("11111");
-        invoice.setItemType("Games");
-        invoice.setItemId(1);
-        invoice.setQuantity(1);
-        invoice.setUnitPrice(new
-
-                BigDecimal("99.99"));
-        invoice.setSubtotal(new
-
-                BigDecimal("99.99"));
-        invoice.setTax(new
-
-                BigDecimal("2.99"));
-        invoice.setProcessingFee(new
-
-                BigDecimal("1.98"));
-        invoice.setTotal(new
-
-                BigDecimal("104.97"));
-
-        Invoice invoice2 = new Invoice();
-        invoice.setName("James Brown");
-        invoice.setCity("New Haven");
-        invoice.setState("CT");
-        invoice.setZipcode("11111");
-        invoice.setItemType("Games");
-        invoice.setItemId(1);
-        invoice.setQuantity(1);
-        invoice.setUnitPrice(new
-
-                BigDecimal("99.99"));
-
-        List<Invoice> invoiceList = new ArrayList<>();
-        invoiceList.add(invoice);
-
-
-        doReturn(invoice).when(invoiceRepository).save(invoice2);
-        doReturn(Optional.of(invoice)).when(invoiceRepository).findById(new Long(1));
-        doReturn(invoiceList).when(invoiceRepository).findAll();
-
-    }
 
     @Test
     public void shouldFindAllInvoices(){
@@ -208,13 +165,13 @@ public class GameStoreInvoicingServiceLayerTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void shouldFailCreateFindInvoiceWithBadItemType() {
-        TShirtViewModel tShirt = new TShirtViewModel();
-        tShirt.setSize("Medium");
-        tShirt.setColor("Blue");
-        tShirt.setDescription("V-Neck");
-        tShirt.setPrice(new BigDecimal("19.99"));
-        tShirt.setQuantity(5);
-        tShirt = service.createTShirt(tShirt);
+//        TShirtViewModel tShirt = new TShirtViewModel();
+//        tShirt.setSize("Medium");
+//        tShirt.setColor("Blue");
+//        tShirt.setDescription("V-Neck");
+//        tShirt.setPrice(new BigDecimal("19.99"));
+//        tShirt.setQuantity(5);
+//        tShirt = service.createTShirt(tShirt);
 
         InvoiceViewModel invoiceViewModel = new InvoiceViewModel();
         invoiceViewModel.setName("John Jake");
@@ -442,6 +399,35 @@ public class GameStoreInvoicingServiceLayerTest {
 
         doReturn(Optional.of(taxNC)).when(taxRepository).findById("NC");
         doReturn(Optional.of(taxNY)).when(taxRepository).findById("NY");
+
+    }
+
+    public void setUpGameStoreClientCatalog(){
+         client = mock(GameStoreCatalogClient.class);
+         TShirt tshirt1= new TShirt();
+        tshirt1.setId(54);
+        tshirt1.setSize("M");
+        tshirt1.setColor("blue");
+        tshirt1.setDescription("cotton");
+        tshirt1.setPrice(new BigDecimal("12.00"));
+        tshirt1.setQuantity(7);
+
+        Optional<TShirt> tShirtOptional= Optional.of(tshirt1);
+
+
+        TShirt tshirt2= new TShirt();
+        tshirt2.setId(4);
+        tshirt2.setSize("S");
+        tshirt2.setColor("black");
+        tshirt2.setDescription("cotton");
+        tshirt2.setPrice(new BigDecimal("17.00"));
+        tshirt2.setQuantity(9);
+
+        Optional<TShirt> tShirtOptional2= Optional.of(tshirt2);
+
+        doReturn(tShirtOptional).when(client).getTShirt(54L);
+        doReturn(tShirtOptional2).when(client).getTShirt(4L);
+
 
     }
 

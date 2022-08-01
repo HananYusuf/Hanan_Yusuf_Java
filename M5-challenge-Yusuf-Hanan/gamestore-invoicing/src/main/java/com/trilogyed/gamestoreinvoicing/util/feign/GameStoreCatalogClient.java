@@ -1,5 +1,6 @@
 package com.trilogyed.gamestoreinvoicing.util.feign;
 
+import com.trilogyed.gamestoreinvoicing.model.TShirt;
 import com.trilogyed.gamestoreinvoicing.viewModel.ConsoleViewModel;
 import com.trilogyed.gamestoreinvoicing.viewModel.GameViewModel;
 import com.trilogyed.gamestoreinvoicing.viewModel.TShirtViewModel;
@@ -43,22 +44,22 @@ public interface GameStoreCatalogClient {
 //Tshirt
     @GetMapping("/tshirt")
     @ResponseStatus(HttpStatus.OK)
-    public List<TShirtViewModel> getAllTShirts();
+    public List<TShirt> getAllTShirts();
 
     @GetMapping("/tshirt/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Optional<TShirtViewModel> getTShirt(@PathVariable("id") long tShirtId);
+    public Optional<TShirt> getTShirt(@PathVariable("id") long tShirtId);
 
     @PostMapping("/tshirt")
     @ResponseStatus(HttpStatus.CREATED)
     TShirtViewModel createTShirt(@RequestBody @Valid TShirtViewModel tShirtViewModel);
     @GetMapping("/tshirt/size/{size}")
     @ResponseStatus(HttpStatus.OK)
-    public List<TShirtViewModel> getTShirtsBySize(@PathVariable("size") String size);
+    public List<TShirt> getTShirtsBySize(@PathVariable("size") String size);
 
     @GetMapping("/tshirt/color/{color}")
     @ResponseStatus(HttpStatus.OK)
-    public List<TShirtViewModel> getTShirtsByColor(@PathVariable("color") String color);
+    public List<TShirt> getTShirtsByColor(@PathVariable("color") String color);
 
 //Console
     @GetMapping("/console")
