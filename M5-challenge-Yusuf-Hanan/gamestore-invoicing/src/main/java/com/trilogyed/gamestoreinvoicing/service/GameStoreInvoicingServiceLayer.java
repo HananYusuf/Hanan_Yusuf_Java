@@ -42,6 +42,7 @@ public class GameStoreInvoicingServiceLayer {
     ProcessingFeeRepository processingFeeRepo;
     GameStoreCatalogClient client;
 
+    @Autowired
     public GameStoreInvoicingServiceLayer(InvoiceRepository invoiceRepo, TaxRepository taxRepo, ProcessingFeeRepository processingFeeRepo, GameStoreCatalogClient client) {
         this.invoiceRepo = invoiceRepo;
         this.taxRepo = taxRepo;
@@ -76,9 +77,11 @@ public class GameStoreInvoicingServiceLayer {
         return tshirtList;
     }
 
-    public Optional<TShirtViewModel> getTShirt(@PathVariable("id") int tShirtId){
-        return client.getTShirt(tShirtId);
+    public Optional<TShirtViewModel> getTShirtById(@PathVariable("id") long tshirtId) {
+        return client.getTShirt(tshirtId);
     }
+    public Optional<TShirtViewModel> getTShirtById(@PathVariable("id") int tShirtId) {
+       return client.getTShirt(tShirtId);}
 
     public TShirtViewModel createTShirt(@RequestBody @Valid TShirtViewModel tShirtViewModel){
         return client.createTShirt(tShirtViewModel);
@@ -172,7 +175,7 @@ public class GameStoreInvoicingServiceLayer {
        }
         else if (invoiceViewModel.getItemType().equals(TSHIRT_ITEM_TYPE)) {
             TShirtViewModel tempTShirt = null;
-            Optional<TShirtViewModel> returnVal = client.getTShirt(invoice.getId());;
+            Optional<TShirtViewModel> returnVal = client.getTShirt(invoice.getItemId());;
 
             if (returnVal.isPresent()) {
                 tempTShirt = returnVal.get();

@@ -36,8 +36,8 @@ public class GameStoreInvoicingServiceLayerTest {
         setUpProcessingFeeRepositoryMock();
         setUpTaxRepositoryMock();
 
-   //     service = new GameStoreInvoicingServiceLayer(invoiceRepository, taxRepository,
-    //            processingFeeRepository);
+//       service = new GameStoreInvoicingServiceLayer(invoiceRepository, taxRepository,
+//               processingFeeRepository);
     }
 
     //Testing Invoice Operations...
@@ -66,6 +66,57 @@ public class GameStoreInvoicingServiceLayerTest {
         InvoiceViewModel ivmfromService = service.getInvoice(invoiceViewModel.getId());
 
         assertEquals(invoiceViewModel, ivmfromService);
+
+     }
+
+    @Test
+    public void createAndFindInvoice() {
+
+        Invoice invoice = new Invoice();
+        invoice.setId(1);
+        invoice.setName("James Brown");
+        invoice.setCity("New Haven");
+        invoice.setState("CT");
+        invoice.setZipcode("11111");
+        invoice.setItemType("Games");
+        invoice.setItemId(1);
+        invoice.setQuantity(1);
+        invoice.setUnitPrice(new
+
+                BigDecimal("99.99"));
+        invoice.setSubtotal(new
+
+                BigDecimal("99.99"));
+        invoice.setTax(new
+
+                BigDecimal("2.99"));
+        invoice.setProcessingFee(new
+
+                BigDecimal("1.98"));
+        invoice.setTotal(new
+
+                BigDecimal("104.97"));
+
+        Invoice invoice2 = new Invoice();
+        invoice.setName("James Brown");
+        invoice.setCity("New Haven");
+        invoice.setState("CT");
+        invoice.setZipcode("11111");
+        invoice.setItemType("Games");
+        invoice.setItemId(1);
+        invoice.setQuantity(1);
+        invoice.setUnitPrice(new
+
+                BigDecimal("99.99"));
+
+        List<Invoice> invoiceList = new ArrayList<>();
+        invoiceList.add(invoice);
+
+
+        doReturn(invoice).when(invoiceRepository).save(invoice2);
+        doReturn(Optional.of(invoice)).when(invoiceRepository).findById(new Long(1));
+        doReturn(invoiceList).when(invoiceRepository).findAll();
+
     }
 
     @Test

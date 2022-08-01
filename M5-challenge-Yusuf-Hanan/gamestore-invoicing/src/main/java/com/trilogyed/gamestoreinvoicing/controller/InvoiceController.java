@@ -59,9 +59,8 @@ public class InvoiceController {
 
     @GetMapping("/tshirt/{id}")
     public Optional<TShirtViewModel> getTShirt(@PathVariable("id") int tShirtId) {
-        return service.getTShirt(tShirtId);
+        return service.getTShirtById(tShirtId);
     }
-
     @PostMapping("/tshirt")
     @ResponseStatus(HttpStatus.CREATED)
     TShirtViewModel createTShirt(@RequestBody @Valid TShirtViewModel tShirtViewModel){
