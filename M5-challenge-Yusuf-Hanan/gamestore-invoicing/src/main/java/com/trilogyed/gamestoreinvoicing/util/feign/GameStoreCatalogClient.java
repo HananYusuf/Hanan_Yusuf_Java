@@ -61,6 +61,10 @@ public interface GameStoreCatalogClient {
     @ResponseStatus(HttpStatus.OK)
     public List<TShirt> getTShirtsByColor(@PathVariable("color") String color);
 
+    @PutMapping("/tshirt")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateTShirt(@RequestBody @Valid TShirt tShirt);
+
 //Console
     @GetMapping("/console")
     @ResponseStatus(HttpStatus.OK)
@@ -74,5 +78,9 @@ public interface GameStoreCatalogClient {
     public ConsoleViewModel getConsoleById(@PathVariable("id") long consoleId);
     @GetMapping("/console/manufacturer/{manufacturer}")
     public List<ConsoleViewModel> getConsoleByManufacturer(@PathVariable("manufacturer") String manu);
+
+    @PutMapping("/console")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateConsole(@RequestBody @Valid ConsoleViewModel consoleViewModel);
 
 }

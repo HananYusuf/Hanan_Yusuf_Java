@@ -24,28 +24,16 @@ public class InvoiceRepositoryTest {
 
     @Autowired
     InvoiceRepository invoiceRepository;
-//    @Autowired
-//    TShirtRepository tShirtRepository;
-//    @Autowired
-//    GameRepository gameRepository;
-//    @Autowired
-//    ConsoleRepository consoleRepository;
-
-
-//    @Autowired
-//    TShirtViewModrl tShirtViewModrl;
     @Autowired
     TaxRepository taxRepository;
     @Autowired
     ProcessingFeeRepository processingFeeRepository;
 
-    @Autowired
-    GameStoreCatalogClient client;
+//    @Autowired
+//    GameStoreCatalogClient client;
     @Before
     public void setUp() throws Exception {
-//        consoleRepository.deleteAll();
-//        gameRepository.deleteAll();
-//        tShirtRepository.deleteAll();
+
         invoiceRepository.deleteAll();
         processingFeeRepository.deleteAll();
 
@@ -71,7 +59,6 @@ public class InvoiceRepositoryTest {
 
         //Arrange
 
-
         Invoice invoice1 = new Invoice();
         invoice1.setName("Joe Black");
         invoice1.setStreet("123 Main St");
@@ -79,8 +66,8 @@ public class InvoiceRepositoryTest {
         invoice1.setState("NY");
         invoice1.setZipcode("10016");
         invoice1.setItemType("T-Shirts");
-        invoice1.setItemId(1);
-        invoice1.setUnitPrice(new BigDecimal ("12.00"));
+        invoice1.setItemId(9);
+        invoice1.setUnitPrice(new BigDecimal ("20.00"));
         invoice1.setQuantity(2);
 
         invoice1.setSubtotal(
@@ -124,8 +111,8 @@ public class InvoiceRepositoryTest {
         invoice1.setState("NY");
         invoice1.setZipcode("10016");
         invoice1.setItemType("T-Shirts");
-        invoice1.setItemId(2);
-        invoice1.setUnitPrice(new BigDecimal ("17.00"));
+        invoice1.setItemId(3);
+        invoice1.setUnitPrice(new BigDecimal ("19.00"));
         invoice1.setQuantity(2);
 
         invoice1.setSubtotal(invoice1.getUnitPrice().multiply(new BigDecimal(invoice1.getQuantity())));

@@ -403,8 +403,8 @@ public class GameStoreInvoicingServiceLayerTest {
     }
 
     public void setUpGameStoreClientCatalog(){
-         client = mock(GameStoreCatalogClient.class);
-         TShirt tshirt1= new TShirt();
+        client = mock(GameStoreCatalogClient.class);
+        TShirt tshirt1= new TShirt();
         tshirt1.setId(54);
         tshirt1.setSize("M");
         tshirt1.setColor("blue");

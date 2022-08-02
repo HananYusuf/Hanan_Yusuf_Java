@@ -51,6 +51,12 @@ public class InvoiceController {
         return service.getGameStudio(studio);
     }
 
+    @PutMapping ("/game")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateGame(@RequestBody @Valid GameViewModel gameViewModel) {
+        service.updateGame(gameViewModel);
+    }
+
 //Tshirt
 
     @GetMapping("/tshirt")
@@ -77,6 +83,11 @@ public class InvoiceController {
         return service.getTShirtsByColor(color);
     }
 
+    @PutMapping("/tshirt")
+    public void updateTShirt(@RequestBody @Valid TShirt tShirt){
+        service.updateTShirt(tShirt);
+    }
+
 //Console
     @GetMapping("/console")
     public List<ConsoleViewModel> getAllConsoles() {
@@ -93,7 +104,13 @@ public class InvoiceController {
         return service.getConsoleByManufacturer(manu);
     }
 
-//Invoice
+    @PutMapping("/console")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateConsole(@RequestBody @Valid ConsoleViewModel consoleViewModel){
+         service.updateConsole(consoleViewModel);
+    }
+
+    //Invoice
     @PostMapping("/createInvoice")
     @ResponseStatus(HttpStatus.CREATED)
     public InvoiceViewModel purchaseItem(@RequestBody @Valid InvoiceViewModel invoiceViewModel) {

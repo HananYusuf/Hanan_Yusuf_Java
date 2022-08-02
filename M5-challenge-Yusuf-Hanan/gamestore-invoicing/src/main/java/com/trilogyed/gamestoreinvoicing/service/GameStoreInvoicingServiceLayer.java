@@ -16,10 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.math.BigDecimal;
@@ -72,6 +69,10 @@ public class GameStoreInvoicingServiceLayer {
         return client.getGamesByStudio(studio);
     }
 
+    public void updateGame(@RequestBody @Valid GameViewModel gameViewModel) {
+        client.updateGame(gameViewModel);
+    }
+
 //Tshirt
     public List<TShirt> getAllTShirts(){
         List<TShirt> tshirtList = this.client.getAllTShirts();
@@ -112,7 +113,14 @@ public class GameStoreInvoicingServiceLayer {
         return client.getConsoleByManufacturer(manu);
     }
 
-//Invoice
+     public void updateConsole(@RequestBody @Valid ConsoleViewModel consoleViewModel){
+         client.updateConsole(consoleViewModel);
+     }
+     public void updateTShirt(@RequestBody @Valid TShirt tShirt){
+        client.updateTShirt(tShirt);
+     }
+
+    //Invoice
     public InvoiceViewModel createInvoice(InvoiceViewModel invoiceViewModel) {
 
         //validation...
@@ -155,6 +163,8 @@ public class GameStoreInvoicingServiceLayer {
                 throw new IllegalArgumentException("Requested quantity is unavailable.");
             }
 
+            tempCon.setQuantity(tempCon.getQuantity() - invoiceViewModel.getQuantity());
+            client.updateConsole(tempCon);
             invoice.setUnitPrice(console.get().getPrice());
 
        }
@@ -171,6 +181,9 @@ public class GameStoreInvoicingServiceLayer {
             if(invoiceViewModel.getQuantity() >  tempGame.getQuantity()){
                 throw new IllegalArgumentException("Requested quantity is unavailable.");
             }
+
+            tempGame.setQuantity(tempGame.getQuantity() - invoiceViewModel.getQuantity());
+            client.updateGame(tempGame);
             invoice.setUnitPrice(tempGame.getPrice());
 
        }
@@ -187,6 +200,9 @@ public class GameStoreInvoicingServiceLayer {
             if(invoiceViewModel.getQuantity() >  tempTShirt.getQuantity()){
                 throw new IllegalArgumentException("Requested quantity is unavailable.");
             }
+
+            tempTShirt.setQuantity(tempTShirt.getQuantity() - invoiceViewModel.getQuantity());
+            client.updateTShirt(tempTShirt);
             invoice.setUnitPrice(tempTShirt.getPrice());
 
         } else {
@@ -194,7 +210,7 @@ public class GameStoreInvoicingServiceLayer {
                     ": Unrecognized Item type. Valid ones: T-Shirt, Console, or Game");
         }
 
-            invoice.setQuantity(invoiceViewModel.getQuantity());
+        invoice.setQuantity(invoiceViewModel.getQuantity());
 
             invoice.setSubtotal(
                     invoice.getUnitPrice().multiply(
