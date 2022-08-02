@@ -29,8 +29,6 @@ public class InvoiceRepositoryTest {
     @Autowired
     ProcessingFeeRepository processingFeeRepository;
 
-//    @Autowired
-//    GameStoreCatalogClient client;
     @Before
     public void setUp() throws Exception {
 
@@ -58,7 +56,6 @@ public class InvoiceRepositoryTest {
     public void shouldAddFindDeleteInvoice() {
 
         //Arrange
-
         Invoice invoice1 = new Invoice();
         invoice1.setName("Joe Black");
         invoice1.setStreet("123 Main St");
